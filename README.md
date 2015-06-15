@@ -1,6 +1,6 @@
 # mailinglistmanager.local
 
-This project is in development. The files are the public directory.
+This project is in development. The files are the mailinglist/public directory.
 
 This is the server code for the mailing list manager. 
 

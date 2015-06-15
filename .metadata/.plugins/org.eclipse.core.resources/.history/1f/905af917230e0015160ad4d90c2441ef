@@ -1,0 +1,10 @@
+<?php
+namespace AbtractControllers;
+
+abstract class AbtractMailingListManager {
+	abstract function create();
+	abstract function read();
+	abstract function update();
+	abstract function delete();
+}
+

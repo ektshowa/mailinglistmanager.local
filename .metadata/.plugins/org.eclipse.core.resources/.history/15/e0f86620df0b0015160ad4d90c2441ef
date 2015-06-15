@@ -1,0 +1,84 @@
+<?php
+require_once $_SERVER["DOCUMENT_ROOT"] . '/AbstractModels/AbstractSubscriber.php';  
+
+use AbstractModels;
+
+class Subscriber extends AbstractModels\AbstractSubscriber {
+		
+	private $id;
+	private $email;
+	private $firstname;
+	private $lastname;
+	private $password;
+	private $role;
+	private $mimetype;
+	private $table;
+	private $dbutils;
+	
+	public function __construct($tableName = "Users") {
+		$this->dbutils = new DBUtils();
+		$this->table = $tableName;	
+	}
+	
+	public function toArray() {
+		return array(
+			'id' 		=> $this->id,
+			'email'		=> $this->email,
+			'firstname'	=> $this->firstname,
+			'lastname'	=> $this->lastname,
+			'password'	=> $this->password,
+			'role'		=> $this->role,
+			'mimetype'	=> $this->mimetype
+		);
+		
+	}
+	
+	public function getId() {
+		return $this->id;
+	}
+	
+	public function setId($userId) {
+		$this->id = $userId;	
+	}
+	
+	public function setEmail($email) {
+		$this->email = $email;
+	}
+	
+	public function getEmail() {
+		return $this->email;
+	}
+	
+	public function getFirstname() {
+		return $this->firstname;
+	} 
+	
+	public function setFirstname($firstname) {
+		$this->firstname = $firstname;
+	}
+	
+	public function getLastname() {
+		return $this->lastname;
+	}
+	
+	public function setLastname($lastname) {
+		$this->lastname = $lastname;
+	}
+	
+	public function getName() {
+			
+		if (isset($this->firstname) && isset($this->lastname)) {
+			return $this->firstname . " " . $this->lastname;	
+		}
+		else {
+			throw new Exception("Subscriber Model: Firstname or Lastname not set");
+			return FALSE;
+		}
+	}
+	
+	public function setName() {
+		$this->
+	}
+	
+	
+}

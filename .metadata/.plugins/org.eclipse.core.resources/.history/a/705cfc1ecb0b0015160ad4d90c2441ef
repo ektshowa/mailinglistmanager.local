@@ -1,0 +1,16 @@
+<?php
+namespace AbstractModels;
+
+abstract class AbstractUser {
+	abstract function getEmail($userid);
+	abstract function getName($userid);
+	abstract function getPassword($userid);
+	abstract function setEmail($email);
+	abstract function setName($name);
+	abstract function setPassword($password);
+	abstract function addUser(AbtractUser $user);
+	abstract function removeUser(AbtractUser $user);
+	abstract function save(array $params);
+	abstract function read($params);
+	abstract function toArray();
+}

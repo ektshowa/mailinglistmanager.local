@@ -214,3 +214,30 @@ org.eclipse.core.runtime.CoreException: No property tester contributes a propert
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1450)
 !SUBENTRY 1 org.eclipse.core.expressions 4 201 2015-06-10 18:27:56.644
 !MESSAGE No property tester contributes a property org.eclipse.core.resources.contentTypeId to type class org.eclipse.ui.part.FileEditorInput
+!SESSION 2015-06-21 18:17:51.441 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_80
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-06-21 18:18:10.208
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+!SESSION 2015-07-03 17:13:39.916 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_80
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-07-03 17:14:17.654
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+!SESSION 2015-07-04 15:05:06.442 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_80
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-07-04 15:05:16.404
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.

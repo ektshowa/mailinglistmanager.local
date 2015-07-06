@@ -1,14 +1,15 @@
 <?php
 namespace Models;
 
-include_once $_SERVER["DOCUMENT_ROOT"] . '/AbstractModels/AbstractSubscriber.php'; 
-include_once $_SERVER["DOCUMENT_ROOT"] . '/Helpers/DatabaseConnection.php';
-include_once $_SERVER["DOCUMENT_ROOT"] . '/Helpers/DBUtils.php'; 
+include_once ABSTRACT_MODELS_FOLDER . "AbstractSubscriber.php";
+include_once HELPERS_FOLDER . 'DatabaseConnection.php';
+include_once HELPERS_FOLDER . 'DBUtils.php'; 
 
-use AbstractModels;
+use AbstractModels\AbstractSubscriber;
 use Helpers\DBUtils;
+use Helpers\DatabaseConnection;
 
-class Subscriber extends \AbstractModels\AbstractSubscriber {
+class Subscriber extends AbstractSubscriber {
 		
 	private $id;
 	private $email;
@@ -46,7 +47,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 	public static function setPDO($dsn, $username, $userpass){
 		
 		//Get the Connection array
-		self::$pdo = Helpers\DatabaseConnection::getDBHandle($dsn, $username, $userpass);
+		return DatabaseConnection::getDBHandle($dsn, $username, $userpass);
 	}
 	
 	public function getId() {
@@ -64,7 +65,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;
 		}
 		else {
-			throw new Exception("Subscriber Model - setId(): Not a valide User ID");
+			throw new \Exception("Subscriber Model - setId(): Not a valide User ID");
 			return FALSE;
 		}	
 	}
@@ -75,7 +76,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;	
 		}
 		else {
-			throw new Exception("Subscriber Model - setEmail(): Not valide email");
+			throw new \Exception("Subscriber Model - setEmail(): Not valide email");
 			return FALSE;
 		}
 		
@@ -86,7 +87,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return $this->email;
 		}
 		else {
-			throw new Exception("Subscriber Model - getEmail(): Email not set ");
+			throw new \Exception("Subscriber Model - getEmail(): Email not set ");
 			return FALSE;
 		}
 	}
@@ -101,7 +102,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;	
 		}
 		else {
-			throw new Exception("Subscriber Model: Trying to set the firstname with empty string");
+			throw new \Exception("Subscriber Model: Trying to set the firstname with empty string");
 			return false;
 		}
 	}
@@ -111,7 +112,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return $this->lastname;	
 		}
 		else {
-			throw new Exception("Subscriber Model: Lastname not set");
+			throw new \Exception("Subscriber Model: Lastname not set");
 			return FALSE;
 		}
 	}
@@ -122,7 +123,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;
 		}
 		else {
-			throw new Exception("Subscriber Model: Trying to set the lastname with empty string");
+			throw new \Exception("Subscriber Model: Trying to set the lastname with empty string");
 			return false;
 		}
 	}
@@ -133,7 +134,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return $this->firstname . " " . $this->lastname;	
 		}
 		else {
-			throw new Exception("Subscriber Model: Firstname or Lastname not set");
+			throw new \Exception("Subscriber Model: Firstname or Lastname not set");
 			return FALSE;
 		}
 	}
@@ -145,7 +146,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;
 		}
 		else {
-			throw new Exception("Subscriber Model - setName(): Missing firstname and lastname parameters");
+			throw new \Exception("Subscriber Model - setName(): Missing firstname and lastname parameters");
 			return FALSE;
 		}
 	}
@@ -156,7 +157,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;
 		}
 		else {
-			throw new Exception("Subscriber Model - setPassword(): No parameter value");
+			throw new \Exception("Subscriber Model - setPassword(): No parameter value");
 			return FALSE;
 		}
 	}
@@ -166,7 +167,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return $this->password;
 		}
 		else {
-			throw new Exception("Subscriber Model - getPassword(): Password not set");
+			throw new \Exception("Subscriber Model - getPassword(): Password not set");
 			return FALSE;
 		}
 	}
@@ -177,7 +178,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;
 		}
 		else {
-			throw new Exception("Subscriber Model - setRole(): Parameter not set");
+			throw new \Exception("Subscriber Model - setRole(): Parameter not set");
 			return FALSE;
 		}
 	}
@@ -187,7 +188,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return $this->role;
 		}
 		else {
-			throw new Exception("Subscriber Model - getRole(): Role nor set");
+			throw new \Exception("Subscriber Model - getRole(): Role nor set");
 			return FALSE;
 		}
 	}
@@ -198,7 +199,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return TRUE;
 		}
 		else {
-			throw new Exception("Subscriber Model - setMimetype(): Parameter not set");
+			throw new \Exception("Subscriber Model - setMimetype(): Parameter not set");
 			return FALSE;
 		}
 	}
@@ -208,12 +209,12 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			return $this->mimetype;
 		}
 		else {
-			throw new Exception("Subscriber Model - getMimetype(): Mimetype not set");
+			throw new \Exception("Subscriber Model - getMimetype(): Mimetype not set");
 			return FALSE;
 		}
 	}
 	
-	public function save($params)
+	public function save(array $params)
     {
        //If the connection has been successfully created
         if (self::$pdo['success']) {
@@ -234,7 +235,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
 			$result = $this->dbutils->build_single_table_select(self::$pdo['dbHandle'], $$this->table, $fields, $filters);
 		}
 		else {
-			throw new Exception("Subscriber fetch - " . self::$pdo['errormsg']);
+			throw new \Exception("Subscriber fetch - " . self::$pdo['errormsg']);
 			$result['success'] = FALSE;
 			$result['errormsg'] = self::$pdo['errormsg'];
 		}
@@ -248,7 +249,7 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
         	$result = $this->dbutils->build_single_table_select(self::$pdo['dbHandle'], $$this->table, array('id', 'email', 'password'), array('id' => $subscriberid));
         }
 		else {
-			throw new Exception("Subscriber fetch - " . self::$pdo['errormsg']);
+			throw new \Exception("Subscriber fetch - " . self::$pdo['errormsg']);
 			$result['success'] = FALSE;
 		}
 		return $result['success'];
@@ -264,11 +265,19 @@ class Subscriber extends \AbstractModels\AbstractSubscriber {
     		$result = $this->dbutils->build_single_table_select(self::$pdo['dbHandle'], $$this->table, $fields, $filters);
     	}
 		else {
-			throw new Exception("Subscriber checkSubscriberCredential - " . self::$pdo['errormsg']);
+			throw new \Exception("Subscriber checkSubscriberCredential - " . self::$pdo['errormsg']);
 			$result['success'] = FALSE;
 			$result['errormsg'] = self::$pdo['errormsg'];
 		}
 		return $result;
     }
+	
+	public function addUser($subscriber){
+		
+	}
+	
+	public function removeUser($subscriber){
+		
+	}
     
 }

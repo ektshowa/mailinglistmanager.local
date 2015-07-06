@@ -1,13 +1,14 @@
 <?php
 namespace Controllers;
 
-include_once $_SERVER["DOCUMENT_ROOT"] . "/AbstractControllers/abstractSubscriber.php";
+include_once "Helpers/application_constants.php";
+include_once ABSTRACT_CONTROLLERS_FOLDERS . "abstractSubscriber.php";
 include_once $_SERVER["DOCUMENT_ROOT"] . "/Models/subscriber.php";
 
 use Models\Subscriber;
-use AbstractControllers;
+use AbstractControllers\AbstractSubscriberController;
 
-class Subscribers extends \AbstractControllers\AbstractSubscriberController {
+class Subscribers extends AbstractSubscriberController {
 	private $_params;
 	private static $dsn;
 	 
@@ -40,15 +41,15 @@ class Subscribers extends \AbstractControllers\AbstractSubscriberController {
     	return $result;
     	
     }
-    public function read()
+    public function readAction()
 	{
     	
     }
-	public function update()
+	public function updateAction()
 	{
 		
 	}
-	public function delete()
+	public function deleteAction()
 	{
 		
 	} 

@@ -1,5 +1,4 @@
 <?php
-use Controllers\Subscribers;
 
 // Define path to data folder
 define('DATA_PATH', realpath(dirname(__FILE__).'/data'));
@@ -13,6 +12,8 @@ $applications = array(
 //include_once 'Models/subscriber.php';
 //include_once 'Helpers/DatabaseConnection.php';
 //include_once 'Helpers/DBUtils.php'; 
+
+use Controllers\Subcribers;
  
 //wrap the whole thing in a try-catch block to catch any wayward exceptions!
 try {
@@ -40,38 +41,52 @@ try {
 			'lastname'	=> 'lastsub',
 			'password'	=> sha1('admin'),
 			'role'		=> 'admin',
-			'mimetype'	=> 'H'
+			'mimetype'	=> 'H',
+			'controller' => 'subscribers',
+			'username' => 'admin'
 	);
 	
 	//cast it into an array
-    $params = (array) $params;
+    //$params = (array) $params;
+	
+	$controller = $params['controller'];
 	 
-	//get the controller and format it correctly so the first
-    //letter is always capitalized
-    $controller = ucfirst(strtolower($params['controller']));
-     
-    //get the action and format it correctly so all the
+	//get the action and format it correctly so all the
     //letters are not capitalized, and append 'Action'
     //$action = strtolower($params['action']).'Action';
     $action = 'createAction';
  
     //check if the controller exists. if not, throw an exception
-    if( file_exists("Controllers/{$controller}.php") ) {
-        include_once "Controllers/{$controller}.php";
-    } else {
-        throw new Exception('Controller is invalid.');
-    }
-    
-    //if( file_exists("Controllers/Subscribers.php") ) {
-    //    include_once "Controllers/Subscribers.php";
+    //if( file_exists("Controllers/{$controller}.php") ) {
+    //    include_once "Controllers/{$controller}.php";
     //} else {
     //    throw new Exception('Controller is invalid.');
     //}
+    
+    //if( file_exists("Controllers/subscribers.php") ) {
+    //    include_once "Controllers/subscribers.php";
+    //} else {
+    //    throw new Exception('Controller is invalid.');
+    //}
+    
+    if (! file_exists("Controllers/{$controller}.php")) {
+    //if (! file_exists("Controllers/subscribers.php")) {
+    	throw new Exception('Controller is invalid ');
+    }
+	else {
+		include_once "Controllers/subscribers.php";
+		//get the controller and format it correctly so the first
+    	//letter is always capitalized
+    	$controller = ucfirst(strtolower($params['controller']));
+		trigger_error("CONTROLLER VALID");
+	}
      
     //create a new instance of the controller, and pass
     //it the parameters from the request
-    $controller = new $controller($params);
-    //$controller = new Subcribers($params);
+    $controller = "Controllers\{$controller}" ;
+    
+    //$controller = new $controller($params);
+    $controller = new Controllers\Subscribers($params);
      
     //check if the action exists in the controller. if not, throw an exception.
     if( method_exists($controller, $action) === false ) {

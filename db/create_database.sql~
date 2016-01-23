@@ -1,0 +1,221 @@
+CREATE DATABASE mailinglistmanager_db;
+
+use mailinglistmanager_db;
+
+CREATE TABLE IF NOT EXISTS lists
+(
+   id int auto_increment not null primary key,
+   listname varchar(20) not null,
+   description varchar(255)
+);
+
+create table if not exists roles
+(
+  id int auto_increment not null primary key,
+  code varchar(10),
+  description varchar(100)
+) ENGINE=InnoDB;
+
+
+create table if not exists users
+(
+  id int auto_increment not null primary key,
+  email varchar(100),
+  firstname varchar(100),
+  lastname varchar(100),
+  addressline1 varchar(100),
+  addressline2 varchar(100),
+  city varchar(100),
+  state varchar(50),
+  zipcode varchar(11),
+  country varchar(100),	
+  mimetype varchar(1),
+  roleid int,
+  password varchar(70),
+  index (roleid),
+  foreign key (roleid) references roles(id)
+)  ENGINE=InnoDB;
+
+# stores a relationship between a users and a list 
+create table user_lists
+(
+  id int auto_increment not null primary key,
+  userid int,
+  listid int,
+  index (userid),
+  index (listid),
+  foreign key (userid) references users(id), 
+  foreign key (listid) references lists(id)
+) ENGINE=InnoDB;
+
+create table if not exists mail
+(
+  id int auto_increment not null primary key, 
+  email varchar(100),
+  subject varchar(100),
+  listid int,
+  status char(10),
+  sent datetime,
+  modified timestamp,
+  index listid(listid),
+  foreign key (listid) references lists(id)
+) ENGINE=InnoDB;
+
+#stores the images that go with a particular mail
+create table if not exists images
+(
+  id int auto_increment not null primary key, 
+  mailid int,
+  filepath char(100),
+  mimetype varchar(100),
+  index mailid(mailid),
+  foreign key (mailid) references mail(id)
+) ENGINE=InnoDB;
+
+create table if not exists business
+(
+  id int auto_increment not null primary key,
+  name varchar(100),
+  email varchar(100),
+  phoneNumber varchar(20),
+  address1 varchar(150),
+  address2 varchar(150),
+  city varchar(100),
+  state varchar(50),
+  zipcode varchar(20),
+  country varchar(100),
+  active tinyint(1) DEFAULT 0,
+  createdate datetime,
+  updatedate datetime
+) ENGINE=InnoDB;
+
+create table if not exists segments
+(
+  id int auto_increment not null primary key,
+  name varchar(100),
+  description varchar(100),
+  datecreate datetime,
+  dateupdate datetime
+) ENGINE=Innodb;
+
+create table if not exists clientGroup
+(
+  id int auto_increment not null primary key,
+  name varchar(100),
+  description varchar(150),
+  segmentid int,
+  datecreate datetime,
+  dateupdate datetime,
+  index segmentid(segmentid),
+  foreign key (segmentid) references segments(id)
+) ENGINE=Innodb;
+
+create table if not exists emails
+(
+  id int auto_increment not null primary key,
+  subject varchar(100),
+  textbody varchar(1000),
+  htmlbody varchar(1000),
+  footer varchar(1000),
+  header varchar(1000),
+  emaildate datetime,
+  sentdate datetime,
+  attachment varchar(300),
+  togroupid int,
+  createdate datetime,
+  updatedate datetime,
+  index togroupid(togroupid),
+  foreign key (togroupid) references clientGroup(id)
+) ENGINE=Innodb;
+
+create table if not exists clients
+(
+  id int auto_increment not null primary key,
+  firstname varchar(100),
+  lastname varchar(100),
+  email varchar(1000),
+  phonenumber varchar(30),
+  zipcode varchar(15),
+  city varchar(100),
+  createdate datetime,
+  updatedate datetime
+) ENGINE=Innodb;
+
+create table if not exists campaigns
+(
+  id int auto_increment not null primary key,
+  name varchar(100),
+  description varchar(150),
+  startdate datetime,
+  enddate datetime,
+  initiatedby int,
+  businessid int,
+  createdate datetime,
+  updatetime datetime,
+  index initiatedby(initiatedby),
+  index businessid(businessid),
+  foreign key (initiatedby) references users(id),
+  foreign key (businessid) references business(id)
+) ENGINE=Innodb;
+
+create table if not exists movements
+(
+  id int auto_increment not null primary key,
+  clientid int,
+  groupid int,
+  campaignid int,
+  emailid int,
+  createdate datetime,
+  updatedate datetime,
+  index campaignid(campaignid),
+  index clientid(clientid),
+  index groupid(groupid),
+  index emailid(emailid),
+  foreign key (campaignid) references campaigns(id),
+  foreign key (clientid) references clients(id),
+  foreign key (groupid) references clientGroup(id),
+  foreign key (emailid) references emails(id)
+) ENGINE=Innodb; 
+
+create table if not exists sentEmailsErrorLog
+(
+  id int auto_increment not null primary key,
+  emailid int,
+  datetimesent datetime,
+  errorinfo varchar(200),
+  movementid int,
+  createdate datetime,
+  updatedate datetime,
+  index emailid(emailid),
+  index movementid(movementid),
+  foreign key (emailid) references emails(id),
+  foreign key (movementid) references movements(id)
+) ENGINE=Innodb;
+
+create table if not exists emailsfiles
+(
+  id int auto_increment not null primary key,
+  emailid int,
+  filepath varchar(200)
+  createdate datetime,
+  updatedate datetime,
+  index emailid(emailid)
+  foreign key (emailid) references emails(id)
+); 
+
+grant select, insert, update, delete
+on mailinglistmanager_db.*
+to mlm@localhost identified by 'admin';
+insert into roles (code, description) values
+('admin', 'Application Administrator');
+insert into roles (code, description) values
+('regular', 'Regular User');
+
+insert into users (email, firstname, lastname, mimetype, password, roleId) values
+('mlm@localhost', 'Mailtestfirst', 'Mailtestlast', 'H', sha1('mlm'), 1);
+
+insert into users (email, firstname, lastname, mimetype, password, roleId) values
+('admin@localhost', 'Adminfirst', 'Adminlast', 'H', sha1('admin'), 1);
+insert into users (email, firstname, lastname, mimetype, password, roleId) values
+('laura_xt@optusnet.com.au', 'Laurafirst', 'Lauralast', 'H', sha1('laura'), 1);
+

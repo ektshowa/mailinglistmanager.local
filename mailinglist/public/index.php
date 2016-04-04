@@ -1,14 +1,18 @@
 <?php
+
 // Define path to data folder
 define('DATA_PATH', realpath(dirname(__FILE__).'/data'));
+
 //Define our id-key pairs
 $applications = array(
     'APP001' => '28e336ac6c9423d946ba02d19c6a2632', //randomly generated app key 
 );
+
 //include our models
 //include_once 'Models/subscriber.php';
 //include_once 'Helpers/DatabaseConnection.php';
 //include_once 'Helpers/DBUtils.php'; 
+
 use Controllers\Subcribers;
  
 //wrap the whole thing in a try-catch block to catch any wayward exceptions!
@@ -107,4 +111,3 @@ try {
 //echo the result of the API call
 echo json_encode($result);
 exit();
-?>

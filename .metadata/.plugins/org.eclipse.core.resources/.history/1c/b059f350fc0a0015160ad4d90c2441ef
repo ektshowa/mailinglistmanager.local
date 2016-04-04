@@ -1,0 +1,9 @@
+<?php
+namespace AbstractModels;
+
+abstract class AbstractSubscriber extends AbstractUser {
+	abstract function getMimetype($subscriberid);
+	abstract function getRole($subscriberid);
+	abstract function setMimetype($mimetype);
+	abstract function setRole($role);
+}

@@ -1,0 +1,2 @@
+<?php
+define("ABSTRACT_CONTROLLERS_FOLDERS", "/var/www/html/mailinglistmanager.local/mailinglist/AbstractControllers/");

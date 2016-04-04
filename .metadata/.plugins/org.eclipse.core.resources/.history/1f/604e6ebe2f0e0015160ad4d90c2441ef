@@ -1,0 +1,25 @@
+<?php
+
+namespace Controllers;
+
+include_once $_SERVER["DOCUMENT_ROOT"] . "/AbstractControllers/abstractSubscriber.php";
+include_once $_SERVER["DOCUMENT_ROOT"] . "/Models/subscriber.php";
+
+use Models;
+use AbstractControllers;
+
+class Subscribers extends AbstractControllers\AbstractSubscriberController {
+	private $_params;
+	private static $dsn;
+	 
+    public function __construct($params)
+    {
+        $this->_params = $params;
+		
+		//Set dsn value in a config file and get it from there.
+		self::$dsn = 'mysql:host=localhost;dbname=berkleeFunctiondb';
+    	Subscriber::setPDO(self::$dsn, $this->_params['username'], $this->_params['userpass']);
+    	
+    }
+	 
+}

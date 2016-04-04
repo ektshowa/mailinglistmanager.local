@@ -1,15 +1,18 @@
 <?php
+use Controllers;
+
 // Define path to data folder
 define('DATA_PATH', realpath(dirname(__FILE__).'/data'));
+
 //Define our id-key pairs
 $applications = array(
     'APP001' => '28e336ac6c9423d946ba02d19c6a2632', //randomly generated app key 
 );
+
 //include our models
 //include_once 'Models/subscriber.php';
 //include_once 'Helpers/DatabaseConnection.php';
 //include_once 'Helpers/DBUtils.php'; 
-use Controllers\Subcribers;
  
 //wrap the whole thing in a try-catch block to catch any wayward exceptions!
 try {
@@ -38,16 +41,17 @@ try {
 			'password'	=> sha1('admin'),
 			'role'		=> 'admin',
 			'mimetype'	=> 'H',
-			'controller' => 'subscribers',
-			'username' => 'admin'
+			'controller' => 'subscribers'
 	);
 	
 	//cast it into an array
     //$params = (array) $params;
-	
-	$controller = $params['controller'];
 	 
-	//get the action and format it correctly so all the
+	//get the controller and format it correctly so the first
+    //letter is always capitalized
+    $controller = ucfirst(strtolower($params['controller']));
+     
+    //get the action and format it correctly so all the
     //letters are not capitalized, and append 'Action'
     //$action = strtolower($params['action']).'Action';
     $action = 'createAction';
@@ -66,23 +70,13 @@ try {
     //}
     
     if (! file_exists("Controllers/{$controller}.php")) {
-    //if (! file_exists("Controllers/subscribers.php")) {
-    	throw new Exception('Controller is invalid ');
+    	throw new Exception('Controller is invalid');
     }
-	else {
-		include_once "Controllers/subscribers.php";
-		//get the controller and format it correctly so the first
-    	//letter is always capitalized
-    	$controller = ucfirst(strtolower($params['controller']));
-		trigger_error("CONTROLLER VALID");
-	}
      
     //create a new instance of the controller, and pass
     //it the parameters from the request
-    $controller = "Controllers\{$controller}" ;
-    
-    //$controller = new $controller($params);
-    $controller = new Controllers\Subscribers($params);
+    $controller = new $controller($params);
+    //$controller = new Subcribers($params);
      
     //check if the action exists in the controller. if not, throw an exception.
     if( method_exists($controller, $action) === false ) {
@@ -107,4 +101,3 @@ try {
 //echo the result of the API call
 echo json_encode($result);
 exit();
-?>

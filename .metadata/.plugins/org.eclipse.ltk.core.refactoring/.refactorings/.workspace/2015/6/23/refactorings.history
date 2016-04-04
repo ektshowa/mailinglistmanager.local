@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;mailinglistmanager.local&apos; to &apos;mailinglist&apos;" description="Rename resource &apos;mailinglistmanager.local&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/mailinglistmanager.local" name="mailinglist" stamp="1433349664407" updateReferences="true"/>&#x0A;<refactoring comment="Delete resource &apos;mailinglist/db/create_database.sql&apos;" deleteContents="false" description="Delete resource &apos;mailinglist/db/create_database.sql&apos;" element1="/mailinglist/db/create_database.sql" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1433350717840"/>
+</session>

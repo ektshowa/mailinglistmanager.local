@@ -6,34 +6,42 @@ namespace Controllers;
 require_once ABSTRACT_CONTROLLERS_FOLDER . "abstractSubscriberController.php";
 require_once ABSTRACT_MODELS_FOLDER . "abstractSubscriberModel.php";
 require_once MODELS_FOLDER . "subscriberModel.php";
+require_once MODELS_FOLDER . SUBSCRIBER_MODELMAPPER_FILENAME;
 
-use Models\SubscriberModel;
-use AbstractModels\AbstractSubscriberModel;
+//use Models\SubscriberModel;
+//use AbstractModels\AbstractSubscriberModel;
+use AbstractLoginServices\AbstractLoginProxy;
+use LoginServices\LoginProxy;
 use AbstractControllers\AbstractSubscriberController;
+use Models\SubscriberModelMapper;
 
 class SubscribersController extends AbstractSubscriberController {
-	private $_params;
-	private static $dsn;
-	private $subscriberModel;
+	protected $_params;
+	protected static $dsn;
+	protected $subscriberModel;
+	protected $subscriberModelMapper;
 	 
     public function __construct($params = array())
     {
         $this->params = $params;
 		
+		/*
 		//Set dsn value in a config file and get it from there.
-		self::$dsn = 'mysql:host=localhost;dbname=mailinglistmanager_db';
+				self::$dsn = 'mysql:host=localhost;dbname=mailinglistmanager_db';
+				
+				// This should be removed from here. Create a class that will return the PDO instance
+				// and call it heret
+				SubscriberModel::setPDO(self::$dsn, 'root', 'admin');*/
 		
-		// This should be removed from here. Create a class that will return the PDO instance
-		// and call it heret
-    	SubscriberModel::setPDO(self::$dsn, 'root', 'admin');
 		
 		trigger_error("SUBSCRIBER CONTROLLER PARAMS - ");
 		error_log(print_r($this->params, TRUE));
     }
 	
-	private function setSubscriberModel(AbstractSubscriberModel $subscriberModel) {
-		$this->subscriberModel = $subscriberModel; 
-  	}
+	// REPLACE THIS WITH THE SUBSCRIBER MAPPER
+	//private function setSubscriberModel(AbstractSubscriberModel $subscriberModel) {
+	//	$this->subscriberModel = $subscriberModel; 
+  	//}
 	
 	// Change this following the zend controller style. Add a private Subscriber property.
 	// Create a set Subscriber Model method see how the DtTable class has been added in zend model
@@ -62,26 +70,36 @@ class SubscribersController extends AbstractSubscriberController {
 		return $result;
     	
     }
-    public function readAction()
+	
+    public function loginSubscriber()
 	{
     	trigger_error("SUBSCRIBER CONTROLLER ENTERING READ ACTION");
-		$result = array();
+		
+		//The array that will be returned to the service
+		$thisresult = array();
 		
 		try {
-		  $subscriberModel = new SubscriberModel();
-		  $this->setSubscriberModel($subscriberModel);
-		  $fields = array('email', 'firstname', 'lastname', 'password','roleid', 'mimetype', 'createdDate', 'updatedDate');
-		  
-		  $result = $this->subscriberModel->fetch($fields, array('email' => $this->params['email']));
-		  trigger_error("SUBSCRIBER CONTROLLER FINISHED READ ACTION");
-		  error_log(print_r($result, TRUE));
-		}
-		catch (\Exception $e) {
-			$result['success'] = FALSE;
-			$result['message'] = $e->getMessage();
-		}
-		return $result;
+		   $this->subscriberModelMapper = new SubscriberModelMapper();	
+		   
+		   $result = $this->subscriberModelMapper->fetchSubscriberByCredentials($this->params['username'], $this->params['password']);
+		   if ($result['success'] == TRUE) {
+		   	   
+		   	   // HERE GET VALUE OF RESULT['DATA']
+		   	   $thisresult['data'] = $result['data'];
+			   $thisresult['sucess'] = TRUE;
+		   }
+		}	
+	    catch (\Exception $e) {
+	    	$thisresult['success'] = FALSE;
+			$thisresult['message'] = $e->getMessage();
+	    }
+		unset($result);
+		return json_encode($thisresult);
     }
+    public function readAction()
+	{
+		
+	}
 	public function updateAction()
 	{
 		

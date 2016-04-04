@@ -3,10 +3,12 @@ namespace AbstractModels;
 
 abstract class AbstractUserModel {
 	abstract function getEmail();
-	abstract function getName();
+	abstract function getFirstname();
+	abstract function getLastname();
 	abstract function getPassword();
 	abstract function setEmail($email);
-	abstract function setName($name);
+	abstract function setFirstname($firstname);
+	abstract function setLastname($lastname);
 	abstract function setPassword($password);
 //	abstract function addUser($user);
 //	abstract function removeUser($user);

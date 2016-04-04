@@ -1,4 +1,10 @@
 <?php
+    
+    /**
+	 * CREATE A CLASS WITH A STATIC METHOD THAT RETURNS THE ENTITTY MANAGER
+	 * CALL THAT CLASS IN THE MODELS MAPPER
+	 */
+
     use Doctrine\ORM\Tools\Setup;
 	use Doctrine\ORM\EntityManager;
 	
@@ -30,3 +36,6 @@
     
     
 	$entityManager = EntityManager::create($dbParams, $config);
+
+	
+	
